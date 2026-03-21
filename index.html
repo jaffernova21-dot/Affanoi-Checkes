@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affanoi Ai | Life OS & Brain</title>
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- html2pdf for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Firebase SDK (Mock Initialization) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar (Desktop) -->
+        <nav class="sidebar">
+            <div class="brand">
+                <span class="sticker pulse">✨</span>
+                <h2>Affanoi Ai</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</li>
+                <li data-target="jkbose"><i data-lucide="book-open"></i> JKBOSE Hub</li>
+                <li data-target="journal"><i data-lucide="pen-tool"></i> Journal</li>
+                <li data-target="vault"><i data-lucide="library"></i> The Vault</li>
+                <li data-target="posters"><i data-lucide="image"></i> Poster Studio</li>
+                <li data-target="qna"><i data-lucide="brain-circuit"></i> Q&A AI (PDF)</li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- The Daily Oracle (Persistent Header) -->
+            <header class="daily-oracle glass-panel">
+                <div class="oracle-content">
+                    <h3 id="oracle-greeting">Loading Oracle...</h3>
+                    <p id="oracle-insight" class="text-muted">Analyzing your daily patterns...</p>
+                </div>
+                <div class="oracle-sticker float">🦉</div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="views-container">
+                
+                <!-- VIEW: Dashboard (Life & Goals) -->
+                <div id="dashboard" class="view active">
+                    <h2 class="view-title">Life & Goal Tracker</h2>
+                    <div class="grid-layout">
+                        <div class="card">
+                            <h3><span class="sticker float">🇪🇸</span> Duolingo Spanish</h3>
+                            <div class="progress-bar"><div class="progress" style="width: 75%;"></div></div>
+                            <p class="text-muted mt-2">Streak: 42 Days. Keep going!</p>
+                        </div>
+                        <div class="card">
+                            <h3><span class="sticker pulse">📖</span> The Observation Hell</h3>
+                            <p class="text-large" id="book-countdown">-- Days Left</p>
+                            <p class="text-muted">Target Completion: Next Year</p>
+                        </div>
+                        <div class="card">
+                            <h3><span class="sticker bounce">🏃</span> Daily Habits</h3>
+                            <label class="checkbox-container"> Read 10 pages <input type="checkbox" checked><span class="checkmark"></span></label>
+                            <label class="checkbox-container"> Workout <input type="checkbox"><span class="checkmark"></span></label>
+                            <label class="checkbox-container"> Meditate <input type="checkbox"><span class="checkmark"></span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: JKBOSE Class 12 Hub -->
+                <div id="jkbose" class="view hidden">
+                    <h2 class="view-title">JKBOSE Class 12 Hub</h2>
+                    <div class="grid-layout">
+                        <div class="card subject-card">
+                            <h3>⚛️ Physics</h3>
+                            <p class="text-muted">Optics & Electrostatics pending.</p>
+                            <button class="btn-primary" onclick="generateConcept('Physics')">AI Concept Breakdown</button>
+                        </div>
+                        <div class="card subject-card">
+                            <h3>🧪 Chemistry</h3>
+                            <p class="text-muted">Organic nomenclature review.</p>
+                            <button class="btn-primary" onclick="generateConcept('Chemistry')">AI Concept Breakdown</button>
+                        </div>
+                        <div class="card subject-card">
+                            <h3>💻 Math / CS</h3>
+                            <p class="text-muted">Calculus integration exercises.</p>
+                            <button class="btn-primary" onclick="generateConcept('Math')">AI Concept Breakdown</button>
+                        </div>
+                        <div class="card subject-card">
+                            <h3>📚 English</h3>
+                            <p class="text-muted">Flamingo poetry analysis.</p>
+                            <button class="btn-primary" onclick="generateConcept('English')">AI Concept Breakdown</button>
+                        </div>
+                    </div>
+                    <div id="concept-result" class="card mt-4 hidden"></div>
+                </div>
+
+                <!-- VIEW: Journal -->
+                <div id="journal" class="view hidden">
+                    <h2 class="view-title">Daily Journal & Planner</h2>
+                    <div class="card">
+                        <div class="form-group">
+                            <label>What I missed today...</label>
+                            <textarea id="journal-missed" placeholder="Reflect on missed opportunities..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>What I achieved ✨</label>
+                            <textarea id="journal-achieved" placeholder="Celebrate your wins..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Plan for tomorrow 🚀</label>
+                            <textarea id="journal-plan" placeholder="Set your intentions..."></textarea>
+                        </div>
+                        <button class="btn-primary w-full" onclick="saveJournal()">Save to MongoDB (Simulated)</button>
+                    </div>
+                </div>
+
+                <!-- VIEW: Vault -->
+                <div id="vault" class="view hidden">
+                    <h2 class="view-title">The Knowledge Vault</h2>
+                    <div class="grid-layout">
+                        <div class="card"><h4>🏛️ Philosophy</h4></div>
+                        <div class="card"><h4>📜 History</h4></div>
+                        <div class="card"><h4>🤖 AI & ML</h4></div>
+                        <div class="card">
+                            <h4>💼 Business Insights</h4>
+                            <p class="text-sm mt-2 text-muted" id="business-insight">Generating market trends...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: Poster Studio -->
+                <div id="posters" class="view hidden">
+                    <h2 class="view-title">Goal Poster Studio</h2>
+                    <div class="card">
+                        <div class="form-group flex">
+                            <input type="text" id="poster-prompt" placeholder="e.g., Focus on passing Class 12 with a futuristic vibe">
+                            <button class="btn-primary" onclick="generatePoster()">Generate</button>
+                        </div>
+                        <div class="poster-gallery mt-4" id="poster-gallery">
+                            <!-- Generated posters go here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: Q&A (PDF Feature) -->
+                <div id="qna" class="view hidden">
+                    <h2 class="view-title">Advanced Q&A to PDF</h2>
+                    <div class="card">
+                        <div class="form-group">
+                            <label>Ask a complex question (SambaNova API):</label>
+                            <textarea id="qna-input" rows="4" placeholder="e.g., Explain the dual nature of radiation (JKBOSE Physics)..."></textarea>
+                        </div>
+                        <button class="btn-primary" onclick="handleQnA()">Generate Answer</button>
+                        
+                        <div id="qna-result-box" class="mt-4 hidden">
+                            <div class="qna-content card bg-offwhite" id="qna-response-text"></div>
+                            <button class="btn-secondary mt-2" onclick="downloadPDF()"><i data-lucide="download"></i> Download Solution PDF</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Mobile Bottom Nav -->
+        <nav class="mobile-nav">
+            <div class="m-nav-item active" data-target="dashboard"><i data-lucide="layout-dashboard"></i></div>
+            <div class="m-nav-item" data-target="jkbose"><i data-lucide="book-open"></i></div>
+            <div class="m-nav-item" data-target="journal"><i data-lucide="pen-tool"></i></div>
+            <div class="m-nav-item" data-target="vault"><i data-lucide="library"></i></div>
+            <div class="m-nav-item" data-target="qna"><i data-lucide="brain-circuit"></i></div>
+        </nav>
+    </div>
+
+    <!-- Hidden Template for html2pdf.js Export -->
+    <div id="pdf-export-template" class="pdf-wrapper">
+        <div class="pdf-watermark">Affanoi Checkes</div>
+        <div class="pdf-header">
+            <h2>Affanoi Ai - Official Solution Document</h2>
+            <p>Generated via SambaNova Intelligence</p>
+            <hr>
+        </div>
+        <div class="pdf-body" id="pdf-export-body"></div>
+    </div>
+
+    <!-- JS Link -->
+    <script src="app.js"></script>
+</body>
+</html>
