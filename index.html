@@ -1,192 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Affanoi Ai | Life OS & Brain</title>
-    <!-- CSS Link -->
-    <link rel="stylesheet" href="styles.css">
-    <!-- html2pdf for PDF Generation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Affanoi Ai | Premium Life OS</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- Firebase SDK (Mock Initialization) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-    <!-- Icons (Lucide) -->
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Sidebar (Desktop) -->
-        <nav class="sidebar">
+    <div class="app-layout">
+        
+        <aside class="sidebar" id="sidebar">
             <div class="brand">
-                <span class="sticker pulse">✨</span>
-                <h2>Affanoi Ai</h2>
+                <i data-lucide="cpu" class="brand-icon"></i>
+                <span>Affanoi Ai</span>
             </div>
-            <ul class="nav-links">
-                <li class="active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</li>
-                <li data-target="jkbose"><i data-lucide="book-open"></i> JKBOSE Hub</li>
-                <li data-target="journal"><i data-lucide="pen-tool"></i> Journal</li>
-                <li data-target="vault"><i data-lucide="library"></i> The Vault</li>
-                <li data-target="posters"><i data-lucide="image"></i> Poster Studio</li>
-                <li data-target="qna"><i data-lucide="brain-circuit"></i> Q&A AI (PDF)</li>
-            </ul>
-        </nav>
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> Daily Oracle</button>
+                <button class="nav-btn" data-target="class12-hub"><i data-lucide="graduation-cap"></i> JKBOSE Hub</button>
+                <button class="nav-btn" data-target="goal-tracker"><i data-lucide="target"></i> Goals & Streaks</button>
+                <button class="nav-btn" data-target="journal"><i data-lucide="book-open"></i> Daily Journal</button>
+                <button class="nav-btn" data-target="vault"><i data-lucide="library"></i> Knowledge Vault</button>
+                <button class="nav-btn" data-target="qa-pdf"><i data-lucide="file-question"></i> Q&A PDF Studio</button>
+                <button class="nav-btn" data-target="posters"><i data-lucide="image"></i> Goal Posters</button>
+            </nav>
+        </aside>
 
-        <!-- Main Content -->
-        <main class="content">
-            <!-- The Daily Oracle (Persistent Header) -->
-            <header class="daily-oracle glass-panel">
-                <div class="oracle-content">
-                    <h3 id="oracle-greeting">Loading Oracle...</h3>
-                    <p id="oracle-insight" class="text-muted">Analyzing your daily patterns...</p>
+        <main class="main-content">
+            <header class="top-header glass-panel">
+                <div class="header-greeting">
+                    <h2 id="oracle-greeting">Initializing Oracle...</h2>
                 </div>
-                <div class="oracle-sticker float">🦉</div>
+                <div class="header-actions">
+                    <div class="api-status">
+                        <div class="status-dot"></div>
+                        <span id="ai-status-text">SambaNova Connected</span>
+                    </div>
+                </div>
             </header>
 
-            <!-- Views Container -->
-            <div class="views-container">
-                
-                <!-- VIEW: Dashboard (Life & Goals) -->
-                <div id="dashboard" class="view active">
-                    <h2 class="view-title">Life & Goal Tracker</h2>
-                    <div class="grid-layout">
-                        <div class="card">
-                            <h3><span class="sticker float">🇪🇸</span> Duolingo Spanish</h3>
-                            <div class="progress-bar"><div class="progress" style="width: 75%;"></div></div>
-                            <p class="text-muted mt-2">Streak: 42 Days. Keep going!</p>
+            <section id="dashboard" class="view-section active">
+                <div class="oracle-card glass-panel">
+                    <i data-lucide="sparkles" class="oracle-icon"></i>
+                    <h3>Oracle's Daily Insight</h3>
+                    <p id="oracle-message">Loading your personalized daily strategy and business insights...</p>
+                    <div class="trip-planner-widget">
+                        <h4>Upcoming Trip Plans</h4>
+                        <p id="trip-plan-details">No trips planned yet. Ask the AI to draft one!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="class12-hub" class="view-section hidden">
+                <div class="section-header">
+                    <h2>Class 12 Study Hub</h2>
+                    <p>Track syllabus and generate AI notes.</p>
+                </div>
+                <div class="grid-cards">
+                    <div class="subject-card glass-panel">
+                        <h3>Physics</h3>
+                        <button class="btn-ghost ai-tutor-btn" data-subject="Physics">Ask Tutor</button>
+                    </div>
+                    <div class="subject-card glass-panel">
+                        <h3>Chemistry</h3>
+                        <button class="btn-ghost ai-tutor-btn" data-subject="Chemistry">Ask Tutor</button>
+                    </div>
+                    <div class="subject-card glass-panel">
+                        <h3>Mathematics / CS</h3>
+                        <button class="btn-ghost ai-tutor-btn" data-subject="Math">Ask Tutor</button>
+                    </div>
+                    <div class="subject-card glass-panel">
+                        <h3>English</h3>
+                        <button class="btn-ghost ai-tutor-btn" data-subject="English">Ask Tutor</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="goal-tracker" class="view-section hidden">
+                <div class="section-header">
+                    <h2>Active Goals</h2>
+                </div>
+                <div class="goal-list">
+                    <div class="goal-card glass-panel">
+                        <div class="goal-info">
+                            <h3>"The Observation Hell"</h3>
+                            <p>Book Writing Progress</p>
                         </div>
-                        <div class="card">
-                            <h3><span class="sticker pulse">📖</span> The Observation Hell</h3>
-                            <p class="text-large" id="book-countdown">-- Days Left</p>
-                            <p class="text-muted">Target Completion: Next Year</p>
+                        <div class="goal-stats">
+                            <span class="days-left" id="book-days">Target: 90 Days Left</span>
+                            <button class="btn-sticker" onclick="addSticker(this)">⭐</button>
                         </div>
-                        <div class="card">
-                            <h3><span class="sticker bounce">🏃</span> Daily Habits</h3>
-                            <label class="checkbox-container"> Read 10 pages <input type="checkbox" checked><span class="checkmark"></span></label>
-                            <label class="checkbox-container"> Workout <input type="checkbox"><span class="checkmark"></span></label>
-                            <label class="checkbox-container"> Meditate <input type="checkbox"><span class="checkmark"></span></label>
+                    </div>
+                    <div class="goal-card glass-panel">
+                        <div class="goal-info">
+                            <h3>Duolingo Spanish</h3>
+                            <p>Daily Lessons Completed</p>
+                        </div>
+                        <div class="goal-stats">
+                            <span class="streak-count" id="spanish-streak">🔥 14 Day Streak</span>
+                            <button class="btn-sticker" onclick="addSticker(this)">🔥</button>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <!-- VIEW: JKBOSE Class 12 Hub -->
-                <div id="jkbose" class="view hidden">
-                    <h2 class="view-title">JKBOSE Class 12 Hub</h2>
-                    <div class="grid-layout">
-                        <div class="card subject-card">
-                            <h3>⚛️ Physics</h3>
-                            <p class="text-muted">Optics & Electrostatics pending.</p>
-                            <button class="btn-primary" onclick="generateConcept('Physics')">AI Concept Breakdown</button>
-                        </div>
-                        <div class="card subject-card">
-                            <h3>🧪 Chemistry</h3>
-                            <p class="text-muted">Organic nomenclature review.</p>
-                            <button class="btn-primary" onclick="generateConcept('Chemistry')">AI Concept Breakdown</button>
-                        </div>
-                        <div class="card subject-card">
-                            <h3>💻 Math / CS</h3>
-                            <p class="text-muted">Calculus integration exercises.</p>
-                            <button class="btn-primary" onclick="generateConcept('Math')">AI Concept Breakdown</button>
-                        </div>
-                        <div class="card subject-card">
-                            <h3>📚 English</h3>
-                            <p class="text-muted">Flamingo poetry analysis.</p>
-                            <button class="btn-primary" onclick="generateConcept('English')">AI Concept Breakdown</button>
-                        </div>
+            <section id="journal" class="view-section hidden">
+                <div class="journal-grid">
+                    <div class="journal-panel glass-panel">
+                        <h3>What I Achieved Today</h3>
+                        <textarea id="journal-achieved" placeholder="I finished my physics chapter..."></textarea>
                     </div>
-                    <div id="concept-result" class="card mt-4 hidden"></div>
-                </div>
-
-                <!-- VIEW: Journal -->
-                <div id="journal" class="view hidden">
-                    <h2 class="view-title">Daily Journal & Planner</h2>
-                    <div class="card">
-                        <div class="form-group">
-                            <label>What I missed today...</label>
-                            <textarea id="journal-missed" placeholder="Reflect on missed opportunities..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>What I achieved ✨</label>
-                            <textarea id="journal-achieved" placeholder="Celebrate your wins..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Plan for tomorrow 🚀</label>
-                            <textarea id="journal-plan" placeholder="Set your intentions..."></textarea>
-                        </div>
-                        <button class="btn-primary w-full" onclick="saveJournal()">Save to MongoDB (Simulated)</button>
+                    <div class="journal-panel glass-panel">
+                        <h3>What I Missed</h3>
+                        <textarea id="journal-missed" placeholder="Forgot to review vocabulary..."></textarea>
+                    </div>
+                    <div class="journal-panel glass-panel">
+                        <h3>Plan for Tomorrow</h3>
+                        <textarea id="journal-plan" placeholder="Schedule 2 hours for coding..."></textarea>
                     </div>
                 </div>
+                <button class="btn-primary" id="save-journal-btn">Save to MongoDB</button>
+            </section>
 
-                <!-- VIEW: Vault -->
-                <div id="vault" class="view hidden">
-                    <h2 class="view-title">The Knowledge Vault</h2>
-                    <div class="grid-layout">
-                        <div class="card"><h4>🏛️ Philosophy</h4></div>
-                        <div class="card"><h4>📜 History</h4></div>
-                        <div class="card"><h4>🤖 AI & ML</h4></div>
-                        <div class="card">
-                            <h4>💼 Business Insights</h4>
-                            <p class="text-sm mt-2 text-muted" id="business-insight">Generating market trends...</p>
-                        </div>
+            <section id="vault" class="view-section hidden">
+                <div class="vault-categories">
+                    <button class="vault-tag active">Philosophy</button>
+                    <button class="vault-tag">History</button>
+                    <button class="vault-tag">AI & ML</button>
+                    <button class="vault-tag">Business</button>
+                </div>
+                <div class="vault-content glass-panel">
+                    <h3 id="vault-title">Philosophy Database</h3>
+                    <p>Ask SambaNova AI to store new insights or retrieve old concepts here.</p>
+                    <div class="chat-input-area">
+                        <input type="text" id="vault-input" placeholder="Explore a concept...">
+                        <button class="btn-primary" id="vault-ask-btn">Search AI</button>
+                    </div>
+                    <div id="vault-response-area"></div>
+                </div>
+            </section>
+
+            <section id="qa-pdf" class="view-section hidden">
+                <div class="qa-container glass-panel">
+                    <h2>Q&A Problem Solver</h2>
+                    <textarea id="qa-input" placeholder="Paste your question or syllabus topic here..."></textarea>
+                    <button class="btn-primary" id="generate-answer-btn">
+                        <i data-lucide="cpu"></i> Solve via SambaNova
+                    </button>
+                    
+                    <div id="pdf-export-area" class="pdf-export-area hidden">
+                        <div class="watermark-overlay">Affanoi Checkes</div>
+                        <div id="qa-result-content" class="qa-result-content"></div>
+                    </div>
+                    
+                    <button class="btn-primary hidden" id="download-pdf-btn" style="margin-top: 20px;">
+                        <i data-lucide="download"></i> Download as PDF
+                    </button>
+                </div>
+            </section>
+
+            <section id="posters" class="view-section hidden">
+                <div class="poster-controls glass-panel">
+                    <h2>Generate Visual Poster</h2>
+                    <input type="text" id="poster-prompt" placeholder="E.g., A cyberpunk hacker studying AI...">
+                    <div class="poster-actions">
+                        <select id="poster-style">
+                            <option value="cinematic">Cinematic</option>
+                            <option value="anime">Anime</option>
+                            <option value="3d">3D Render</option>
+                        </select>
+                        <select id="poster-ar">
+                            <option value="9:16">Portrait (Phone)</option>
+                            <option value="16:9">Landscape</option>
+                        </select>
+                        <button class="btn-primary" id="generate-poster-btn">Generate</button>
                     </div>
                 </div>
-
-                <!-- VIEW: Poster Studio -->
-                <div id="posters" class="view hidden">
-                    <h2 class="view-title">Goal Poster Studio</h2>
-                    <div class="card">
-                        <div class="form-group flex">
-                            <input type="text" id="poster-prompt" placeholder="e.g., Focus on passing Class 12 with a futuristic vibe">
-                            <button class="btn-primary" onclick="generatePoster()">Generate</button>
-                        </div>
-                        <div class="poster-gallery mt-4" id="poster-gallery">
-                            <!-- Generated posters go here -->
-                        </div>
-                    </div>
+                <div class="poster-result">
+                    <img id="poster-img" src="" style="display: none;" alt="Goal Poster">
+                    <div id="poster-loading" class="hidden">Rendering image...</div>
                 </div>
+            </section>
 
-                <!-- VIEW: Q&A (PDF Feature) -->
-                <div id="qna" class="view hidden">
-                    <h2 class="view-title">Advanced Q&A to PDF</h2>
-                    <div class="card">
-                        <div class="form-group">
-                            <label>Ask a complex question (SambaNova API):</label>
-                            <textarea id="qna-input" rows="4" placeholder="e.g., Explain the dual nature of radiation (JKBOSE Physics)..."></textarea>
-                        </div>
-                        <button class="btn-primary" onclick="handleQnA()">Generate Answer</button>
-                        
-                        <div id="qna-result-box" class="mt-4 hidden">
-                            <div class="qna-content card bg-offwhite" id="qna-response-text"></div>
-                            <button class="btn-secondary mt-2" onclick="downloadPDF()"><i data-lucide="download"></i> Download Solution PDF</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </main>
-
-        <!-- Mobile Bottom Nav -->
-        <nav class="mobile-nav">
-            <div class="m-nav-item active" data-target="dashboard"><i data-lucide="layout-dashboard"></i></div>
-            <div class="m-nav-item" data-target="jkbose"><i data-lucide="book-open"></i></div>
-            <div class="m-nav-item" data-target="journal"><i data-lucide="pen-tool"></i></div>
-            <div class="m-nav-item" data-target="vault"><i data-lucide="library"></i></div>
-            <div class="m-nav-item" data-target="qna"><i data-lucide="brain-circuit"></i></div>
+        
+        <nav class="mobile-nav glass-panel">
+            <button class="nav-btn active" data-target="dashboard"><i data-lucide="layout-dashboard"></i></button>
+            <button class="nav-btn" data-target="goal-tracker"><i data-lucide="target"></i></button>
+            <button class="nav-btn" data-target="qa-pdf"><i data-lucide="file-question"></i></button>
         </nav>
     </div>
 
-    <!-- Hidden Template for html2pdf.js Export -->
-    <div id="pdf-export-template" class="pdf-wrapper">
-        <div class="pdf-watermark">Affanoi Checkes</div>
-        <div class="pdf-header">
-            <h2>Affanoi Ai - Official Solution Document</h2>
-            <p>Generated via SambaNova Intelligence</p>
-            <hr>
-        </div>
-        <div class="pdf-body" id="pdf-export-body"></div>
-    </div>
+    <div id="toast-container" class="toast-container"></div>
 
-    <!-- JS Link -->
     <script src="app.js"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
 </body>
 </html>
